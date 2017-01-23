@@ -1,0 +1,35 @@
+# see https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md
+
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: Example project
+Resources:
+  HelloWorldTsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../dist/helloWorldTs/helloWorldTs.zip
+      Handler: index.handler
+      Runtime: nodejs4.3
+      MemorySize: 128
+      Timeout: 30 # seconds, 300 max
+      Events:
+        RestApi:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+
+  HelloWorldJsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../dist/helloWorldJs/helloWorldJs.zip
+      Handler: index.handler
+      Runtime: nodejs4.3
+      MemorySize: 128
+      Timeout: 30 # seconds, 300 max
+      Events:
+        RestApi:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
