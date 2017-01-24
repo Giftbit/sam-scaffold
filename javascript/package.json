@@ -6,7 +6,6 @@
     "build": "webpack",
     "clean": "rimraf ./dist",
     "lint": "tslint --project tsconfig.json || true",
-    "testts": "mocha --recursive --throw-deprecation --require ts-node/register \"src/**/*.test.ts\"",
     "testjs": "mocha --recursive --throw-deprecation --compilers js:babel-core/register --require babel-polyfill \"src/**/*.test.js\""
   },
   "repository": {
@@ -21,10 +20,6 @@
   },
   "homepage": "https://github.com/Giftbit/sam-scaffold#readme",
   "devDependencies": {
-    "@types/aws-lambda": "0.0.6",
-    "@types/chai": "^3.4.34",
-    "@types/mocha": "^2.2.38",
-    "@types/node": "^7.0.0",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
     "babel-plugin-transform-async-to-generator": "^6.22.0",
@@ -35,10 +30,6 @@
     "json-loader": "^0.5.4",
     "mocha": "^3.2.0",
     "rimraf": "^2.5.4",
-    "ts-loader": "^1.3.3",
-    "ts-node": "^2.0.0",
-    "tslint": "^4.3.1",
-    "typescript": "^2.1.5",
     "webpack": "^1.14.0",
     "webpack-fail-plugin": "^1.0.5",
     "zip-webpack-plugin": "^0.3.0"

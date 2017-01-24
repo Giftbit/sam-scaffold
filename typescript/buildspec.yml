@@ -1,0 +1,22 @@
+version: 0.1
+phases:
+  install:
+    commands:
+      - echo Build enviromment `uname -a` `aws --version 2>&1` node/`node --version` npm/`npm --version`
+      - npm install
+  pre_build:
+    commands:
+  build:
+    commands:
+      - npm run build
+  post_build:
+    commands:
+      # env var BUILD_ARTIFACT_BUCKET is defined in ci.yaml
+      - aws cloudformation package
+         --template-file infrastructure/sam.yaml
+         --s3-bucket $BUILD_ARTIFACT_BUCKET
+         --output-template-file SamDeploymentTemplate.yaml
+artifacts:
+  type: zip
+  files:
+    - SamDeploymentTemplate.yaml

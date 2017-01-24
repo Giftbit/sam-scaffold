@@ -4,8 +4,8 @@
 # eg: ./deploy.sh
 # eg: aws-profile infrastructure_admin ./deploy.sh
 
-BUILD_ARTIFACT_BUCKET="cardssearchci-deploymentartifactbucket-1stb05anhi46z"
-STACK_NAME=CardsSearch-Alpha
+BUILD_ARTIFACT_BUCKET="mys3artifactbucket"
+STACK_NAME=MyProject
 
 aws cloudformation package --template-file infrastructure/sam.yaml --s3-bucket $BUILD_ARTIFACT_BUCKET --output-template-file /tmp/SamDeploymentTemplate.yaml
 echo "Executing aws cloudformation deploy..."

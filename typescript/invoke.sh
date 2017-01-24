@@ -3,7 +3,7 @@
 # Invoke a lambda function.
 # eg: ./upload.sh rest
 
-STACK_NAME=CardsSearch-Alpha
+STACK_NAME=MyProject
 FXN="$1"
 JSON_FILE="$2"
 

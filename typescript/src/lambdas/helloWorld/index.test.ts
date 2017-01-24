@@ -1,7 +1,7 @@
 import * as chai from "chai";
 import * as index from "./";
 
-describe("helloWorldJs", () => {
+describe("helloWorld", () => {
     describe("handlerAsync()", () => {
         it("returns 'Hello World'", async() => {
             const msg = await index.handlerAsync({});

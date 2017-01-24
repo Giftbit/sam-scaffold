@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
-# Upload new lambda function code.
+# Invoke a lambda function.
 # eg: ./upload.sh rest
 
-STACK_NAME=CardsSearch-Alpha
+STACK_NAME=MyProject
 FXN="$1"
+JSON_FILE="$2"
 
-if [ "$#" -ne 1 ]; then
-    echo "Supply a function name to build and upload.  eg: $0 rest"
+if [ "$#" -ne 2 ]; then
+    echo "Supply a function name to invoke and json file to invoke with.  eg: $0 rest evt.json"
     exit 1
 fi
 
@@ -16,9 +17,9 @@ if [ ! -d "./src/lambdas/$FXN" ]; then
     exit 2
 fi
 
-npm run build -- --fxn=$FXN
-if [ $? -ne 0 ]; then
-    exit 1
+if [ ! -d $JSON_FILE ]; then
+    echo "$JSON_FILE does not exist.";
+    exit 3
 fi
 
 # Search for the ID of the function assuming it was named something like FxnFunction where Fxn is the uppercased form of the dir name.
@@ -29,4 +30,4 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-aws lambda update-function-code --function-name $FXN_ID --zip-file fileb://./dist/$FXN/$FXN.zip
+aws lambda invoke --function-name $FXN_ID --payload fileb://$JSON_FILE /dev/stdout
