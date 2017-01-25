@@ -22,18 +22,18 @@ Two versions are provided: one with a [TypeScript](https://www.typescriptlang.or
 
 The behaviour of a lambda function is determined by its source code (inside `src/`) and the other serverless resources it has access to (inside the CloudFormation template `infrastructure/sam.yaml`).
 
-### The commands
+### dev.sh
 
 Local development should be done with [aws cli](https://aws.amazon.com/cli/) installed and configured to use a development account.  For security reasons this should not be your production account.
 
-Development is made easier with these commands:
+A small script `dev.sh` has been provided to make a few of the aws cli commands easier.  That combined with a few `npm` commands are the most common operations of working with a development account: 
 
 - `npm run build` -- compile all lambda functions.
 - `npm run test` -- run all unit tests.
-- `./build.sh foo` -- compile only the lambda function `foo`
-- `./deploy.sh` -- deploy the entire CloudFormation stack including all source code to the currently configured aws cli account.
-- `./upload.sh foo` -- only replace the only the code for the lambda function `foo`.
-- `./invoke.sh foo bar.json` -- invoke and test the already deployed function `foo` with the input file `bar.json`.
+- `./dev.sh build foo` -- compile only the lambda function `foo`
+- `./dev.sh deploy` -- deploy the entire CloudFormation stack including all source code to the currently configured aws cli account.
+- `./dev.sh upload foo` -- only replace the only the code for the lambda function `foo`.
+- `./dev.sh invoke foo bar.json` -- invoke and test the already deployed function `foo` with the input file `bar.json`.
 
 ### Unit testing
 
