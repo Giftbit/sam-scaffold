@@ -18,7 +18,7 @@ export function handler(evt, ctx, callback) {
  * Async/await style programming is easier to work on and exceptions here
  * are well reported.  This is where the real work starts.
  */
-export async function handlerAsync(evt) {
+export async function handlerAsync() {
     // Write biz logic and get paid.
     return "Hello world";
 }
