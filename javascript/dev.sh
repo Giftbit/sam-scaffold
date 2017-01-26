@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-# A few bash commands to make development againa dev environment easy.
+# A few bash commands to make development against dev environment easy.
 # Set the two properties below to sensible values for your project.
 
 # The name of your CloudFormation stack.  Two developers can share a stack by
 # sharing this value, or have their own with different values.
-STACK_NAME=MyProject
+STACK_NAME="MyProject"
 
 # The name of an S3 bucket on your account to hold deployment artifacts.
 BUILD_ARTIFACT_BUCKET="mys3artifactbucket"

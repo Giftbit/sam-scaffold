@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-# A few bash commands to make development againa dev environment easy.
+# A few bash commands to make development against dev environment easy.
 # Set the two properties below to sensible values for your project.
 
 # The name of your CloudFormation stack.  Two developers can share a stack by
 # sharing this value, or have their own with different values.
-STACK_NAME=MyProject
+STACK_NAME="MyProject"
 
 # The name of an S3 bucket on your account to hold deployment artifacts.
 BUILD_ARTIFACT_BUCKET="mys3artifactbucket"
@@ -47,6 +47,10 @@ elif [ "$COMMAND" = "deploy" ]; then
     # eg: aws-profile infrastructure_admin ./deploy.sh
 
     aws cloudformation package --template-file infrastructure/sam.yaml --s3-bucket $BUILD_ARTIFACT_BUCKET --output-template-file /tmp/SamDeploymentTemplate.yaml
+    if [ $? -ne 0 ]; then
+        exit 1
+    fi
+
     echo "Executing aws cloudformation deploy..."
     aws cloudformation deploy --template-file /tmp/SamDeploymentTemplate.yaml --stack-name $STACK_NAME --capabilities CAPABILITY_IAM --parameter-overrides ElasticSearchInstanceCount=2 ElasticSearchInstanceType=t2.small.elasticsearch ElasticSearchMasterInstanceType=t2.small.elasticsearch
 
