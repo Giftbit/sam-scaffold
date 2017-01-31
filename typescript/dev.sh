@@ -90,10 +90,10 @@ elif [ "$COMMAND" = "invoke" ]; then
     fi
 
     # Search for the ID of the function assuming it was named something like FxnFunction where Fxn is the uppercased form of the dir name.
-    FXN_UPPERCASE="$(tr '[:lower:]' '[:upper:]' <<< ${FXN:0:1})${FXN:1}"
-    FXN_ID="$(aws cloudformation describe-stack-resources --stack-name $STACK_NAME --query "StackResources[?ResourceType==\`AWS::Lambda::Function\`&&starts_with(LogicalResourceId,\`$FXN_UPPERCASE\`)].PhysicalResourceId" --output text)"
+    FXN_UPPER_CAMEL_CASE="$(tr '[:lower:]' '[:upper:]' <<< ${FXN:0:1})${FXN:1}"
+    FXN_ID="$(aws cloudformation describe-stack-resources --stack-name $STACK_NAME --query "StackResources[?ResourceType==\`AWS::Lambda::Function\`&&starts_with(LogicalResourceId,\`$FXN_UPPER_CAMEL_CASE\`)].PhysicalResourceId" --output text)"
     if [ $? -ne 0 ]; then
-        echo "Could not discover the LogicalResourceId of $FXN.  Check that there is a ${FXN_UPPERCASE}Function Resource inside infrastructure/sam.yaml and check that it has been deployed."
+        echo "Could not discover the LogicalResourceId of $FXN.  Check that there is a ${FXN_UPPER_CAMEL_CASE}Function Resource inside infrastructure/sam.yaml and check that it has been deployed."
         exit 1
     fi
 
@@ -121,10 +121,10 @@ elif [ "$COMMAND" = "upload" ]; then
     fi
 
     # Search for the ID of the function assuming it was named something like FxnFunction where Fxn is the uppercased form of the dir name.
-    FXN_UPPERCASE="$(tr '[:lower:]' '[:upper:]' <<< ${FXN:0:1})${FXN:1}"
-    FXN_ID="$(aws cloudformation describe-stack-resources --stack-name $STACK_NAME --query "StackResources[?ResourceType==\`AWS::Lambda::Function\`&&starts_with(LogicalResourceId,\`$FXN_UPPERCASE\`)].PhysicalResourceId" --output text)"
+    FXN_UPPER_CAMEL_CASE="$(tr '[:lower:]' '[:upper:]' <<< ${FXN:0:1})${FXN:1}"
+    FXN_ID="$(aws cloudformation describe-stack-resources --stack-name $STACK_NAME --query "StackResources[?ResourceType==\`AWS::Lambda::Function\`&&starts_with(LogicalResourceId,\`$FXN_UPPER_CAMEL_CASE\`)].PhysicalResourceId" --output text)"
     if [ $? -ne 0 ]; then
-        echo "Could not discover the LogicalResourceId of $FXN.  Check that there is a ${FXN_UPPERCASE}Function Resource inside infrastructure/sam.yaml and check that it has been deployed."
+        echo "Could not discover the LogicalResourceId of $FXN.  Check that there is a ${FXN_UPPER_CAMEL_CASE}Function Resource inside infrastructure/sam.yaml and check that it has been deployed."
         exit 1
     fi
 
@@ -133,7 +133,7 @@ elif [ "$COMMAND" = "upload" ]; then
 else
     echo "Error: unknown command name '$COMMAND'."
     echo "  usage: $0 <command name>"
-    echo "Valid command names: build deploy invoke upload"
+    echo "Valid command names: build delete deploy invoke upload"
     exit 2
 
 fi
