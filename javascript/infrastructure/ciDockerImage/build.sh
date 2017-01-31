@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
+# Generates and uploads a custom Docker container with an ssh key built in.
+# This key can be added to other systems for remote access.
+# eg: add it to GitHub for access to GitHub npm dependencies.
+# To have CodeBuild use this image it must be configured in ci.yaml.
+
 if [ "$#" -ne 1 ]; then
-    echo "Supply the docker repo name to upload to.  eg: $0 cards-codeb-timnjrfuk87h"
+    echo "Supply the docker repo name to upload to.  eg: $0 mydockerrepo"
     exit 1
 fi
 
 # The name of the ECR repo as set up in CloudFormation.
-# This is the Physical ID showns in the CloudFormation stack detail.
+# This is the Physical ID shown in the CloudFormation stack detail.
 DOCKER_REPO_NAME="$1"
 
 # Generate an ssh key so the CI image can read from the GitHub repo.
@@ -25,7 +30,7 @@ docker push $DOCKER_REMOTE_HOST:$VERSION_STRING
 
 echo "v---------------"
 cat id_rsa.pub
-echo "^--------------- This is the public SSH key.  Add it to the giftbit-ci GitHub account to give this image git access."
+echo "^--------------- This is the public SSH key.  Add it to your CI GitHub account to give this image git access."
 
 rm id_rsa id_rsa.pub known_hosts
 

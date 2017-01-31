@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # A few bash commands to make development against dev environment easy.
-# Set the two properties below to sensible values for your project.
+# Set the properties below to sensible values for your project.
 
 # The name of your CloudFormation stack.  Two developers can share a stack by
 # sharing this value, or have their own with different values.
@@ -10,6 +10,9 @@ STACK_NAME="MyProject"
 # The name of an S3 bucket on your account to hold deployment artifacts.
 BUILD_ARTIFACT_BUCKET="mys3artifactbucket"
 
+# Parameter values for the sam template.  see: `aws cloudformation deploy help`
+PARAMETER_OVERRIDES=""
+#PARAMETER_OVERRIDES="--parameter-overrides KeyOne=value KeyTwo=value
 
 
 if ! type "aws" &> /dev/null; then
@@ -52,7 +55,7 @@ elif [ "$COMMAND" = "deploy" ]; then
     fi
 
     echo "Executing aws cloudformation deploy..."
-    aws cloudformation deploy --template-file /tmp/SamDeploymentTemplate.yaml --stack-name $STACK_NAME --capabilities CAPABILITY_IAM --parameter-overrides ElasticSearchInstanceCount=2 ElasticSearchInstanceType=t2.small.elasticsearch ElasticSearchMasterInstanceType=t2.small.elasticsearch
+    aws cloudformation deploy --template-file /tmp/SamDeploymentTemplate.yaml --stack-name $STACK_NAME --capabilities CAPABILITY_IAM $PARAMETER_OVERRIDES
 
     if [ $? -ne 0 ]; then
         # Print some help on why it failed.
