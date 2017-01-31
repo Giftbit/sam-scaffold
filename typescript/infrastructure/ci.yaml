@@ -183,6 +183,20 @@ Resources:
             Action:
               - iam:PassRole
             Resource: !GetAtt CloudFormationServiceRole.Arn
+          - !If
+            - MergeAfterDeploy
+            - Effect: Allow
+              Action:
+                - lambda:InvokeFunction
+              Resource: !GetAtt GithubPusherFunction.Arn
+            - !Ref AWS::NoValue
+          - !If
+            - MergeAfterDeploy
+            - Effect: Allow
+              Action:
+                - lambda:ListFunctions
+              Resource: "*"
+            - !Ref AWS::NoValue
   CloudFormationServiceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -424,7 +438,7 @@ Resources:
       Role: !GetAtt GithubPusherServiceRole.Arn
       Code:
         S3Bucket: giftbit-public-resources
-        S3Key: cloudformation/lambda-github-pusher/2017-01-23.zip
+        S3Key: cloudformation/lambda-github-pusher/2017-01-31.zip
       Runtime: nodejs4.3
       Timeout: 120
       Environment:
