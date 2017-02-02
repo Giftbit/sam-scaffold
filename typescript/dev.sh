@@ -12,7 +12,7 @@ BUILD_ARTIFACT_BUCKET="mys3artifactbucket"
 
 # Parameter values for the sam template.  see: `aws cloudformation deploy help`
 PARAMETER_OVERRIDES=""
-#PARAMETER_OVERRIDES="--parameter-overrides KeyOne=value KeyTwo=value
+#PARAMETER_OVERRIDES="--parameter-overrides KeyOne=value KeyTwo=value"
 
 
 if ! type "aws" &> /dev/null; then
