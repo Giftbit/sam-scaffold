@@ -125,7 +125,7 @@ Resources:
       Source:
         Type: CODEPIPELINE
       TimeoutInMinutes: 10
-
+    DependsOn: CodeBuildServicePolicy
   # CodePipeline
   CodePipelineServiceRole:
     Type: AWS::IAM::Role
@@ -289,7 +289,7 @@ Resources:
 #          - Effect: Allow
 #            Action:
 #              - dynamodb:*
-#            Resource: !Sub "arn:aws:apigateway:${AWS::Region}::/*"
+#            Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ProjectName}-*"
           # Manage API Gateway resources
           - Effect: Allow
             Action:
@@ -519,6 +519,7 @@ Resources:
       Code:
         S3Bucket: giftbit-public-resources
         S3Key: cloudformation/lambda-backed-cloud-formation-kms-encryption/lambda/20170102-1440.zip
+    DependsOn: EncryptionLambdaRolePolicy
   EncryptedGitHubOAuthToken:
     Condition: MergeAfterDeploy
     Type: AWS::CloudFormation::CustomResource
