@@ -18,11 +18,11 @@ Parameters:
   GitHubRepoOwner:
     Type: String
     Description: GitHub repo owner.
-    Default: Giftbit
+    Default: mycompany
   GitHubRepo:
     Type: String
     Description: GitHub git repo.
-    Default: giftbit-cards-search
+    Default: myreponame
   GitHubBranch:
     Type: String
     Description: Git branch to build off of.
