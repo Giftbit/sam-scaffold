@@ -510,6 +510,7 @@ Resources:
   EncryptionLambda:
     Condition: MergeAfterDeploy
     Type: AWS::Lambda::Function
+    DependsOn: EncryptionLambdaRolePolicy
     Properties:
       Description: Backs a CloudFormation Custom Resource for encypting values with a specified KMS Key
       Role: !GetAtt EncryptionLambdaRole.Arn
@@ -527,4 +528,3 @@ Resources:
       ServiceToken: !GetAtt EncryptionLambda.Arn
       KeyId: !GetAtt StackKey.Arn
       PlainText: !Ref GitHubOAuthToken
-    DependsOn: EncryptionLambdaRolePolicy
