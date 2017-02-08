@@ -5,7 +5,7 @@ Parameters:
   ProjectName:
     Type: String
     Description: The name of the project being built.  This name will be used on a number of resources.
-    Default: CardsSearch
+    Default: MyAwesomeProject
   ProjectParameterOverrides:
     Type: String
     Description: JSON string for the parameters of the project template.
