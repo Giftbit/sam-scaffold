@@ -21,7 +21,7 @@ Two versions are provided: one with a [TypeScript](https://www.typescriptlang.or
         └── ...
 ```
 
-The behaviour of a lambda function is determined by its source code (inside `src/lambdas`) and the other serverless resources it has access to (inside the CloudFormation template `infrastructure/sam.yaml`).
+The behaviour of a lambda function is determined by its source code (inside a subdirectory of `src/lambdas`) and the other serverless resources it has access to (inside the CloudFormation template `infrastructure/sam.yaml`).
 
 ### Building
 
@@ -39,7 +39,7 @@ These are the commands you can use...
 
 - `./dev.sh build foo` -- compile only the lambda function `foo`
 - `./dev.sh deploy` -- deploy the entire CloudFormation stack including all source code to the currently configured aws cli account.
-- `./dev.sh upload foo` -- only replace the only the code for the lambda function `foo`.
+- `./dev.sh upload foo` -- only replace the the code for the lambda function `foo`.
 - `./dev.sh invoke foo bar.json` -- invoke and test the already deployed function `foo` with the input file `bar.json`.
 - `./dev.sh delete` -- delete the entire CloudFormation stack and all resources.
 
@@ -51,13 +51,15 @@ Linting is provided by [ESLint](http://eslint.org/) in JavaScript and [TSLint](h
 
 ### Unit testing
 
-Unit testing is provided by [Mocha](https://mochajs.org/) and [Chai](http://chaijs.com/) and is run with: `npm run test`.  
+Unit testing is provided by [Mocha](https://mochajs.org/) and [Chai](http://chaijs.com/) and is run with: `npm run test`.
+ 
+Test files are located next to the file beign tested with `.test` added before the extension.  eg: `index.ts` is beside test file `index.test.ts`.  Just like libraries not referenced by index.ts WebPack will not include these file in the distribution.
 
 ### Adding a new lambda function
 
 Add a new directory inside `src/lambdas` named after your function.  Inside there add a file `index.ts` if you're working in TypeScript or `index.js` if you're working in JavaScript.  The file must have an export function `handler` that will be called by AWS.
 
-Add a new `AWS::Serverless::Function` resource inside `infrastructure/sam.yaml`.  Name it after your function with the first leter capitalized.  Set the `CodeUri` to be the dist zip file that will be generated.  eg: if your folder is `src/lambdas/fooBar` name your resource `FooBarFunction` with `CodeUri: ../dist/fooBar/fooBar.zip`.
+Add a new `AWS::Serverless::Function` resource inside `infrastructure/sam.yaml`.  Name it after your function with the first letter capitalized.  Set the `CodeUri` to be the dist zip file that will be generated.  eg: if your folder is `src/lambdas/fooBar` name your resource `FooBarFunction` with `CodeUri: ../dist/fooBar/fooBar.zip`.
 
 ## Continuous Integration
 
