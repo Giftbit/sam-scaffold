@@ -429,9 +429,10 @@ Resources:
             Resource: !GetAtt StackKey.Arn
           - Effect: Allow
             Action:
+              - codepipeline:AcknowledgeJob
               - codepipeline:PutJobSuccessResult
               - codepipeline:PutJobFailureResult
-            Resource: !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${CodePipeline}"
+            Resource: "*"
   GithubPusherFunction:
     Condition: MergeAfterDeploy
     Type: AWS::Lambda::Function
