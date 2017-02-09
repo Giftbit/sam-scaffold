@@ -288,9 +288,11 @@ Resources:
           # Manage DynamoDB tables
 #          - Effect: Allow
 #            Action:
-#              - dynamodb:*
-#            Resource: !Sub "arn:aws:apigateway:${AWS::Region}::/*"
-          # Manage API Gateway resources
+#              - dynamodb:CreateTable
+#              - dynamodb:DeleteTable
+#              - dynamodb:DescribeTable
+#              - dynamodb:UpdateTable
+#            Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ProjectName}-*"
           - Effect: Allow
             Action:
               - apigateway:*
