@@ -74,17 +74,42 @@ Add a new `AWS::Serverless::Function` resource inside `infrastructure/sam.yaml`.
     └── sam.yaml
 ```
 
-Continuous integration is set up through another CloudFormation stack `infrastructure/ci.yaml`.  This stack defines a [CodePipeline](http://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html) that builds the project with [CodeBuild](http://docs.aws.amazon.com/codebuild/latest/userguide/welcome.html) and deploys the SAM stack with CloudFormation.  It's a CloudFormation stack that deploys another CloudFormation stack!
+Continuous integration is set up through another CloudFormation stack `infrastructure/ci.yaml`.  This stack defines a [CodePipeline](http://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html) that builds the project with [CodeBuild](http://docs.aws.amazon.com/codebuild/latest/userguide/welcome.html), which runs the commands in `buildspec.yml`, and one of those commands deploys the SAM stack with CloudFormation.  It's a CloudFormation stack that deploys another CloudFormation stack!
 
-Again, for clarity: `sam.yaml` defines the SAM stack that is the definition of all your lambda functions and their resources; `ci.yaml` defines the CI stack that watches for git repo changes and redeploys the SAM stack automatically.
+Again, for clarity: `sam.yaml` defines the SAM stack that is the definition of all your lambda functions and their resources; `buildspec.yml` defines your compile and deploy commands; `ci.yaml` defines the CI stack that watches for git repo changes and redeploys the SAM stack automatically.
 
-The CI stack is not deployed automatically on changes.  It must be deployed manually.  This was chosen to increase the effort necessary to attack the account.  The CI stack should rarely need to change anyways.
+The CI stack itself **is not** deployed automatically on changes.  It must be deployed manually.  This was chosen to increase the effort necessary to attack the account.  The CI stack should rarely need to change.
 
-The one reason the CI stack would need to change is if the SAM stack is now defining a new resource that the CI stack needs permission to create.  In that case you will need to add the permission, redeploy the CI stack, and then trigger another build to have it attempt to deploy the SAM stack.
+### Build secrets
 
-The CI stack is configured by default to use a standard node [Docker](https://www.docker.com/) image.  It can be configured instead to use a custom Docker image.  See the `AWS::CodeBuild::Project` resource in `ci.yaml` for the relevant property.  `infrastructure/ciDockerImage` contains a helpful script and `Dockerfile` for building and uploading the custom image.
+You may run into a scenario where you need access to secrets during the build process.  For example you have a private repository of packages and need an ssh key to access them.
 
-`buildspec.yml` defines the commands run to build the project inside the Docker image.  By default it runs `npm run build` and won't need to change for most projects.
+The best way to handle these secrets is store them in an S3 bucket, give the `CodeBuildServicePolicy` permission to read that bucket, and then use aws cli commands to retrieve the secrets.
+
+For example add this to ci.yaml:
+```yaml
+# under CodeBuildServicePolicy.Properties.PolicyDocument.Statement
+- Effect: Allow
+  Action:
+    - s3:GetObject
+    - s3:ListBucket
+  Resource:
+    - !Sub "arn:aws:s3:::${MyBucketOfSecrets}"
+    - !Sub "arn:aws:s3:::${MyBucketOfSecrets}/*"
+  Principal:
+    AWS: !GetAtt CiKeysAccessRole.Arn
+
+# under CodeBuildProject.Properties.Environment.EnvironmentVariables
+- Name: BUCKET_OF_SECRETS
+  Value: !Ref MyBucketOfSecrets
+```
+
+and add this to buildspec.yml:
+
+```yaml
+# under phases.install.commands
+- aws s3 sync s3://BUCKET_OF_SECRETS/ ~/secrets
+```
 
 ### Setting up single stage CI
 
