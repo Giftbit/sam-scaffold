@@ -15,6 +15,8 @@ PARAMETER_OVERRIDES=""
 #PARAMETER_OVERRIDES="--parameter-overrides KeyOne=value KeyTwo=value"
 
 
+set -eu
+
 if ! type "aws" &> /dev/null; then
     echo "'aws' was not found in the path.  Install awscli and try again."
     exit 1
@@ -37,32 +39,15 @@ if [ "$COMMAND" = "build" ]; then
 elif [ "$COMMAND" = "delete" ]; then
     aws cloudformation delete-stack --stack-name $STACK_NAME
 
-    if [ $? -ne 0 ]; then
-        # Print some help on why it failed.
-        echo ""
-        echo "Printing recent CloudFormation errors..."
-        aws cloudformation describe-stack-events --stack-name $STACK_NAME --query 'reverse(StackEvents[?ResourceStatus==`CREATE_FAILED`||ResourceStatus==`UPDATE_FAILED`].[ResourceType,LogicalResourceId,ResourceStatusReason])' --output text
-    fi
-
 elif [ "$COMMAND" = "deploy" ]; then
     # Deploy all code and update the CloudFormation stack.
     # eg: ./sam.sh deploy
     # eg: aws-profile infrastructure_admin ./deploy.sh
 
     aws cloudformation package --template-file infrastructure/sam.yaml --s3-bucket $BUILD_ARTIFACT_BUCKET --output-template-file /tmp/SamDeploymentTemplate.yaml
-    if [ $? -ne 0 ]; then
-        exit 1
-    fi
 
     echo "Executing aws cloudformation deploy..."
     aws cloudformation deploy --template-file /tmp/SamDeploymentTemplate.yaml --stack-name $STACK_NAME --capabilities CAPABILITY_IAM $PARAMETER_OVERRIDES
-
-    if [ $? -ne 0 ]; then
-        # Print some help on why it failed.
-        echo ""
-        echo "Printing recent CloudFormation errors..."
-        aws cloudformation describe-stack-events --stack-name $STACK_NAME --query 'reverse(StackEvents[?ResourceStatus==`CREATE_FAILED`||ResourceStatus==`UPDATE_FAILED`].[ResourceType,LogicalResourceId,ResourceStatusReason])' --output text
-    fi
 
     # cleanup
     rm /tmp/SamDeploymentTemplate.yaml
@@ -116,9 +101,6 @@ elif [ "$COMMAND" = "upload" ]; then
     fi
 
     npm run build -- --fxn=$FXN
-    if [ $? -ne 0 ]; then
-        exit 1
-    fi
 
     # Search for the ID of the function assuming it was named something like FxnFunction where Fxn is the uppercased form of the dir name.
     FXN_UPPER_CAMEL_CASE="$(tr '[:lower:]' '[:upper:]' <<< ${FXN:0:1})${FXN:1}"
