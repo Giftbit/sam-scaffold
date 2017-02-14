@@ -350,8 +350,10 @@ Resources:
                 ActionMode: CHANGE_SET_EXECUTE
                 ChangeSetName: !Ref ProjectName
               RunOrder: 3
-            - !If
-              - MergeAfterDeploy
+        - !If
+          - MergeAfterDeploy
+          - Name: Merge
+            Actions:
               - Name: GithubMerge
                 ActionTypeId:
                   Category: Invoke
@@ -360,8 +362,8 @@ Resources:
                   Provider: Lambda
                 Configuration:
                   FunctionName: !Ref GithubPusherFunction
-                RunOrder: 4
-              - !Ref AWS::NoValue
+                RunOrder: 1
+          - !Ref AWS::NoValue
       ArtifactStore:
         Type: S3
         Location: !Ref DeploymentArtifactBucket
