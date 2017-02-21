@@ -44,6 +44,8 @@ elif [ "$COMMAND" = "deploy" ]; then
     # eg: ./sam.sh deploy
     # eg: aws-profile infrastructure_admin ./deploy.sh
 
+    npm run build
+
     aws cloudformation package --template-file infrastructure/sam.yaml --s3-bucket $BUILD_ARTIFACT_BUCKET --output-template-file /tmp/SamDeploymentTemplate.yaml
 
     echo "Executing aws cloudformation deploy..."
