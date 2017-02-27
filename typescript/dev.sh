@@ -26,13 +26,16 @@ COMMAND="$1"
 
 if [ "$COMMAND" = "build" ]; then
     # Build one or more lambda functions.
-    # eg: ./sam.sh build rest rollup
-    # eg: ./sam.sh build
+    # eg: ./dev.sh build rest rollup
+    # eg: ./dev.sh build
 
     BUILD_ARGS=""
-    for ((i=2;i<=$#;i++)); do
-        BUILD_ARGS="$BUILD_ARGS --fxn=${!i}";
-    done
+    if [ "$#" -ge 2 ]; then
+        BUILD_ARGS="--env.fxn=$2"
+        for ((i=3;i<=$#;i++)); do
+            BUILD_ARGS="$BUILD_ARGS,${!i}";
+        done
+    fi
 
     npm run build -- $BUILD_ARGS
 
@@ -41,7 +44,7 @@ elif [ "$COMMAND" = "delete" ]; then
 
 elif [ "$COMMAND" = "deploy" ]; then
     # Deploy all code and update the CloudFormation stack.
-    # eg: ./sam.sh deploy
+    # eg: ./dev.sh deploy
     # eg: aws-profile infrastructure_admin ./deploy.sh
 
     npm run build
@@ -56,7 +59,7 @@ elif [ "$COMMAND" = "deploy" ]; then
 
 elif [ "$COMMAND" = "invoke" ]; then
     # Invoke a lambda function.
-    # eg: ./sam.sh invoke myfunction myfile.json
+    # eg: ./dev.sh invoke myfunction myfile.json
 
     FXN="$2"
     JSON_FILE="$3"
@@ -77,8 +80,8 @@ elif [ "$COMMAND" = "invoke" ]; then
     fi
 
     # Search for the ID of the function assuming it was named something like FxnFunction where Fxn is the uppercased form of the dir name.
-    FXN_UPPER_CAMEL_CASE="$(tr '[:lower:]' '[:upper:]' <<< ${FXN:0:1})${FXN:1}"
-    FXN_ID="$(aws cloudformation describe-stack-resources --stack-name $STACK_NAME --query "StackResources[?ResourceType==\`AWS::Lambda::Function\`&&starts_with(LogicalResourceId,\`$FXN_UPPER_CAMEL_CASE\`)].PhysicalResourceId" --output text)"
+    FXN_UPPERCASE="$(tr '[:lower:]' '[:upper:]' <<< ${FXN:0:1})${FXN:1}"
+    FXN_ID="$(aws cloudformation describe-stack-resources --stack-name $STACK_NAME --query "StackResources[?ResourceType==\`AWS::Lambda::Function\`&&starts_with(LogicalResourceId,\`$FXN_UPPERCASE\`)].PhysicalResourceId" --output text)"
     if [ $? -ne 0 ]; then
         echo "Could not discover the LogicalResourceId of $FXN.  Check that there is a ${FXN_UPPER_CAMEL_CASE}Function Resource inside infrastructure/sam.yaml and check that it has been deployed."
         exit 1
@@ -88,7 +91,7 @@ elif [ "$COMMAND" = "invoke" ]; then
 
 elif [ "$COMMAND" = "upload" ]; then
     # Upload new lambda function code.
-    # eg: ./sam.sh upload myfunction
+    # eg: ./dev.sh upload myfunction
 
     FXN="$2"
 
@@ -105,8 +108,8 @@ elif [ "$COMMAND" = "upload" ]; then
     npm run build -- --fxn=$FXN
 
     # Search for the ID of the function assuming it was named something like FxnFunction where Fxn is the uppercased form of the dir name.
-    FXN_UPPER_CAMEL_CASE="$(tr '[:lower:]' '[:upper:]' <<< ${FXN:0:1})${FXN:1}"
-    FXN_ID="$(aws cloudformation describe-stack-resources --stack-name $STACK_NAME --query "StackResources[?ResourceType==\`AWS::Lambda::Function\`&&starts_with(LogicalResourceId,\`$FXN_UPPER_CAMEL_CASE\`)].PhysicalResourceId" --output text)"
+    FXN_UPPERCASE="$(tr '[:lower:]' '[:upper:]' <<< ${FXN:0:1})${FXN:1}"
+    FXN_ID="$(aws cloudformation describe-stack-resources --stack-name $STACK_NAME --query "StackResources[?ResourceType==\`AWS::Lambda::Function\`&&starts_with(LogicalResourceId,\`$FXN_UPPERCASE\`)].PhysicalResourceId" --output text)"
     if [ $? -ne 0 ]; then
         echo "Could not discover the LogicalResourceId of $FXN.  Check that there is a ${FXN_UPPER_CAMEL_CASE}Function Resource inside infrastructure/sam.yaml and check that it has been deployed."
         exit 1
@@ -117,7 +120,7 @@ elif [ "$COMMAND" = "upload" ]; then
 else
     echo "Error: unknown command name '$COMMAND'."
     echo "  usage: $0 <command name>"
-    echo "Valid command names: build delete deploy invoke upload"
+    echo "Valid command names: build deploy invoke upload"
     exit 2
 
 fi
