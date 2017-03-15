@@ -105,7 +105,7 @@ elif [ "$COMMAND" = "upload" ]; then
         exit 2
     fi
 
-    npm run build -- --fxn=$FXN
+    npm run build -- --env.fxn=$FXN
 
     # Search for the ID of the function assuming it was named something like FxnFunction where Fxn is the uppercased form of the dir name.
     FXN_UPPERCASE="$(tr '[:lower:]' '[:upper:]' <<< ${FXN:0:1})${FXN:1}"
