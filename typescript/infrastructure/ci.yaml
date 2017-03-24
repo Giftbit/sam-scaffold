@@ -369,9 +369,9 @@ Resources:
         Location: !Ref DeploymentArtifactBucket
       Name: !Ref ProjectName
 
-  # GithubPusher pushes from the built branch to the dest branch.
+  # GitHubAction pushes from the built branch to the dest branch.
   # see: https://github.com/Giftbit/lambda-github-pusher
-  GithubPusherServiceRole:
+  GitHubActionServiceRole:
     Condition: PullRequestAfterDeploy
     Type: AWS::IAM::Role
     Properties:
@@ -384,13 +384,13 @@ Resources:
             Principal:
               Service:
                 - lambda.amazonaws.com
-  GithubPusherServicePolicy:
+  GitHubActionServicePolicy:
     Condition: PullRequestAfterDeploy
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: GithubPusherServicePolicy
+      PolicyName: GitHubActionServicePolicy
       Roles:
-        - !Ref GithubPusherServiceRole
+        - !Ref GitHubActionServiceRole
       PolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -415,7 +415,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Handler: index.handler
-      Role: !GetAtt GithubPusherServiceRole.Arn
+      Role: !GetAtt GitHubActionServiceRole.Arn
       Code:
         S3Bucket: giftbit-public-resources
         S3Key: cloudformation/codepipeline-github-action/2017-03-24.zip
@@ -429,7 +429,7 @@ Resources:
           GITHUB_DEST_BRANCH: !Ref GitHubBranchDest
           GITHUB_OAUTH: !GetAtt EncryptedGitHubOAuthToken.CipherText
 
-  # Encrypts the GitHub oauth token for GithubPusher above
+  # Encrypts the GitHub oauth token for GitHubAction above
   StackKey:
     Condition: PullRequestAfterDeploy
     Type: AWS::KMS::Key
