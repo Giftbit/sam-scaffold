@@ -29,7 +29,7 @@ Parameters:
     Default: master
   GitHubBranchDest:
     Type: String
-    Description: Git branch to merge into after a successful deploy.  Leave empty for no action.
+    Description: Git branch to pull request into after a successful deploy.  Leave empty for no action.
     Default: ""
 
 Conditions:
@@ -352,9 +352,9 @@ Resources:
               RunOrder: 3
         - !If
           - PullRequestAfterDeploy
-          - Name: Merge
+          - Name: PullRequest
             Actions:
-              - Name: GithubMerge
+              - Name: GithubPullRequest
                 ActionTypeId:
                   Category: Invoke
                   Owner: AWS
