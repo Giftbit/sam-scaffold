@@ -33,7 +33,7 @@ Parameters:
     Default: ""
 
 Conditions:
-  MergeAfterDeploy: !Not [!Equals [!Ref GitHubBranchDest, ""]]
+  PullRequestAfterDeploy: !Not [!Equals [!Ref GitHubBranchDest, ""]]
 
 Resources:
   # S3 bucket where build artifacts go
@@ -159,14 +159,14 @@ Resources:
               - iam:PassRole
             Resource: !GetAtt CloudFormationServiceRole.Arn
           - !If
-            - MergeAfterDeploy
+            - PullRequestAfterDeploy
             - Effect: Allow
               Action:
                 - lambda:InvokeFunction
-              Resource: !GetAtt GithubPusherFunction.Arn
+              Resource: !GetAtt GitHubActionFunction.Arn
             - !Ref AWS::NoValue
           - !If
-            - MergeAfterDeploy
+            - PullRequestAfterDeploy
             - Effect: Allow
               Action:
                 - lambda:ListFunctions
@@ -351,7 +351,7 @@ Resources:
                 ChangeSetName: !Ref ProjectName
               RunOrder: 3
         - !If
-          - MergeAfterDeploy
+          - PullRequestAfterDeploy
           - Name: Merge
             Actions:
               - Name: GithubMerge
@@ -361,7 +361,7 @@ Resources:
                   Version: 1
                   Provider: Lambda
                 Configuration:
-                  FunctionName: !Ref GithubPusherFunction
+                  FunctionName: !Ref GitHubActionFunction
                 RunOrder: 1
           - !Ref AWS::NoValue
       ArtifactStore:
@@ -372,7 +372,7 @@ Resources:
   # GithubPusher pushes from the built branch to the dest branch.
   # see: https://github.com/Giftbit/lambda-github-pusher
   GithubPusherServiceRole:
-    Condition: MergeAfterDeploy
+    Condition: PullRequestAfterDeploy
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -385,7 +385,7 @@ Resources:
               Service:
                 - lambda.amazonaws.com
   GithubPusherServicePolicy:
-    Condition: MergeAfterDeploy
+    Condition: PullRequestAfterDeploy
     Type: AWS::IAM::Policy
     Properties:
       PolicyName: GithubPusherServicePolicy
@@ -410,15 +410,15 @@ Resources:
               - codepipeline:PutJobSuccessResult
               - codepipeline:PutJobFailureResult
             Resource: "*"
-  GithubPusherFunction:
-    Condition: MergeAfterDeploy
+  GitHubActionFunction:
+    Condition: PullRequestAfterDeploy
     Type: AWS::Lambda::Function
     Properties:
       Handler: index.handler
       Role: !GetAtt GithubPusherServiceRole.Arn
       Code:
         S3Bucket: giftbit-public-resources
-        S3Key: cloudformation/lambda-github-pusher/2017-01-31.zip
+        S3Key: cloudformation/codepipeline-github-action/2017-03-24.zip
       Runtime: nodejs4.3
       Timeout: 120
       Environment:
@@ -431,7 +431,7 @@ Resources:
 
   # Encrypts the GitHub oauth token for GithubPusher above
   StackKey:
-    Condition: MergeAfterDeploy
+    Condition: PullRequestAfterDeploy
     Type: AWS::KMS::Key
     Properties:
       Description: !Sub "KMS Key used for storing the secrets involved in ${ProjectName} CI"
@@ -445,7 +445,7 @@ Resources:
               - "kms:*"
             Resource: "*"
   StackKeyAlias:
-    Condition: MergeAfterDeploy
+    Condition: PullRequestAfterDeploy
     Type: AWS::KMS::Alias
     Properties:
       AliasName:
@@ -453,7 +453,7 @@ Resources:
       TargetKeyId:
         !GetAtt StackKey.Arn
   EncryptionLambdaRole:
-    Condition: MergeAfterDeploy
+    Condition: PullRequestAfterDeploy
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -466,7 +466,7 @@ Resources:
               Service:
                 - lambda.amazonaws.com
   EncryptionLambdaRolePolicy:
-    Condition: MergeAfterDeploy
+    Condition: PullRequestAfterDeploy
     Type: AWS::IAM::Policy
     Properties:
       PolicyName: EncryptionLambda
@@ -488,7 +488,7 @@ Resources:
       Roles:
         - !Ref EncryptionLambdaRole
   EncryptionLambda:
-    Condition: MergeAfterDeploy
+    Condition: PullRequestAfterDeploy
     Type: AWS::Lambda::Function
     DependsOn: EncryptionLambdaRolePolicy
     Properties:
@@ -501,7 +501,7 @@ Resources:
         S3Bucket: giftbit-public-resources
         S3Key: cloudformation/lambda-backed-cloud-formation-kms-encryption/lambda/20170102-1440.zip
   EncryptedGitHubOAuthToken:
-    Condition: MergeAfterDeploy
+    Condition: PullRequestAfterDeploy
     Type: AWS::CloudFormation::CustomResource
     Version: 1.0
     Properties:
