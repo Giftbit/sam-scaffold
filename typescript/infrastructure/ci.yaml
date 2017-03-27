@@ -352,9 +352,9 @@ Resources:
               RunOrder: 3
         - !If
           - PullRequestAfterDeploy
-          - Name: PullRequest
+          - Name: PostRelease
             Actions:
-              - Name: GithubPullRequest
+              - Name: GitHubPullRequest
                 ActionTypeId:
                   Category: Invoke
                   Owner: AWS
@@ -418,7 +418,7 @@ Resources:
       Role: !GetAtt GitHubActionServiceRole.Arn
       Code:
         S3Bucket: giftbit-public-resources
-        S3Key: cloudformation/codepipeline-github-action/2017-03-24.zip
+        S3Key: cloudformation/codepipeline-github-action/2017-03-27.zip
       Runtime: nodejs4.3
       Timeout: 120
       Environment:
