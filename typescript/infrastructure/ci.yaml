@@ -419,7 +419,7 @@ Resources:
       Code:
         S3Bucket: giftbit-public-resources
         S3Key: cloudformation/codepipeline-github-action/2017-03-27.zip
-      Runtime: nodejs4.3
+      Runtime: nodejs6.10
       Timeout: 120
       Environment:
         Variables:
