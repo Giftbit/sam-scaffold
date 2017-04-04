@@ -49,13 +49,14 @@ elif [ "$COMMAND" = "deploy" ]; then
 
     npm run build
 
-    aws cloudformation package --template-file infrastructure/sam.yaml --s3-bucket $BUILD_ARTIFACT_BUCKET --output-template-file /tmp/SamDeploymentTemplate.yaml
+    OUTPUT_TEMPLATE_FILE="/tmp/SamDeploymentTemplate.`date "+%s"`.yaml"
+    aws cloudformation package --template-file infrastructure/sam.yaml --s3-bucket $BUILD_ARTIFACT_BUCKET --output-template-file "$OUTPUT_TEMPLATE_FILE"
 
     echo "Executing aws cloudformation deploy..."
-    aws cloudformation deploy --template-file /tmp/SamDeploymentTemplate.yaml --stack-name $STACK_NAME --capabilities CAPABILITY_IAM $PARAMETER_OVERRIDES
+    aws cloudformation deploy --template-file "$OUTPUT_TEMPLATE_FILE" --stack-name $STACK_NAME --capabilities CAPABILITY_IAM $PARAMETER_OVERRIDES
 
     # cleanup
-    rm /tmp/SamDeploymentTemplate.yaml
+    rm "$OUTPUT_TEMPLATE_FILE"
 
 elif [ "$COMMAND" = "invoke" ]; then
     # Invoke a lambda function.
