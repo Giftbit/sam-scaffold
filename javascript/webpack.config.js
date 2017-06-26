@@ -10,7 +10,7 @@ module.exports = function (env) {
     return functionsToBuild
         .map(fxn => ({
             context: path.resolve(__dirname),
-            entry: path.join(__dirname, 'src', 'lambdas', fxn, 'index.js'),
+            entry: path.join(lambdaFunctionDir, fxn, 'index.js'),
             output: {
                 path: path.join(__dirname, 'dist', fxn),
                 filename: 'index.js',
