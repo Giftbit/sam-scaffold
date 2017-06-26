@@ -3,7 +3,8 @@ const path = require('path');
 const ZipPlugin = require('zip-webpack-plugin');
 
 module.exports = function (env) {
-    const functionsToBuild = env && env.fxn ? env.fxn.split(",") : fs.readdirSync(path.join(__dirname, 'src', 'lambdas'));
+    const lambdaFunctionDir = path.join(__dirname, 'src', 'lambdas');
+    const functionsToBuild = env && env.fxn ? env.fxn.split(",") : fs.readdirSync(lambdaFunctionDir).filter(item => fs.lstatSync(path.join(lambdaFunctionDir, item)).isDirectory() && !item.match(/^\./));
     console.log(`Building ${functionsToBuild.join(", ")}`);
 
     return functionsToBuild
