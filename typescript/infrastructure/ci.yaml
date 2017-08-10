@@ -384,32 +384,27 @@ Resources:
             Principal:
               Service:
                 - lambda.amazonaws.com
-  GitHubActionServicePolicy:
-    Condition: PullRequestAfterDeploy
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: GitHubActionServicePolicy
-      Roles:
-        - !Ref GitHubActionServiceRole
-      PolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Action:
-              - logs:CreateLogGroup
-              - logs:CreateLogStream
-              - logs:PutLogEvents
-            Resource: "arn:aws:logs:*:*:*"
-          - Effect: Allow
-            Action:
-              - kms:decrypt
-            Resource: !GetAtt StackKey.Arn
-          - Effect: Allow
-            Action:
-              - codepipeline:AcknowledgeJob
-              - codepipeline:PutJobSuccessResult
-              - codepipeline:PutJobFailureResult
-            Resource: "*"
+      Policies:
+        - PolicyName: GitHubActionServicePolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+              - Effect: Allow
+                Action:
+                  - kms:decrypt
+                Resource: !GetAtt StackKey.Arn
+              - Effect: Allow
+                Action:
+                  - codepipeline:AcknowledgeJob
+                  - codepipeline:PutJobSuccessResult
+                  - codepipeline:PutJobFailureResult
+                Resource: "*"
   GitHubActionFunction:
     Condition: PullRequestAfterDeploy
     Type: AWS::Lambda::Function
@@ -465,28 +460,23 @@ Resources:
             Principal:
               Service:
                 - lambda.amazonaws.com
-  EncryptionLambdaRolePolicy:
-    Condition: PullRequestAfterDeploy
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: EncryptionLambda
-      PolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Action:
-              - logs:CreateLogGroup
-              - logs:CreateLogStream
-              - logs:PutLogEvents
-            Resource: "arn:aws:logs:*:*:*"
-          - Effect: Allow
-            Action:
-              - kms:Encrypt
-              - kms:DescribeKey
-              - kms:GenerateDataKey
-            Resource: !GetAtt StackKey.Arn
-      Roles:
-        - !Ref EncryptionLambdaRole
+      Policies:
+        - PolicyName: EncryptionLambda
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+              - Effect: Allow
+                Action:
+                  - kms:Encrypt
+                  - kms:DescribeKey
+                  - kms:GenerateDataKey
+                Resource: !GetAtt StackKey.Arn
   EncryptionLambda:
     Condition: PullRequestAfterDeploy
     Type: AWS::Lambda::Function
@@ -499,7 +489,7 @@ Resources:
       Timeout: 15
       Code:
         S3Bucket: giftbit-public-resources
-        S3Key: cloudformation/lambda-backed-cloud-formation-kms-encryption/lambda/20170102-1440.zip
+        S3Key: cloudformation/lambda-backed-cloud-formation-kms-encryption/lambda/20170810-1104.zip
   EncryptedGitHubOAuthToken:
     Condition: PullRequestAfterDeploy
     Type: AWS::CloudFormation::CustomResource
