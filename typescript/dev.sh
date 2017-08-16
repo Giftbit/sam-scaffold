@@ -14,11 +14,19 @@ BUILD_ARTIFACT_BUCKET="mys3artifactbucket"
 PARAMETER_OVERRIDES=""
 #PARAMETER_OVERRIDES="--parameter-overrides KeyOne=value KeyTwo=value"
 
+USAGE="usage: $0 <command name>\nvalid command names: build delete deploy invoke upload"
+
 
 set -eu
 
 if ! type "aws" &> /dev/null; then
     echo "'aws' was not found in the path.  Install awscli and try again."
+    exit 1
+fi
+
+if [ $# -lt 1 ]; then
+    echo "Error: expected a command."
+    echo -e $USAGE
     exit 1
 fi
 
@@ -62,13 +70,13 @@ elif [ "$COMMAND" = "invoke" ]; then
     # Invoke a lambda function.
     # eg: ./dev.sh invoke myfunction myfile.json
 
-    FXN="$2"
-    JSON_FILE="$3"
-
     if [ "$#" -ne 3 ]; then
         echo "Supply a function name to invoke and json file to invoke with.  eg: $0 invoke myfunction myfile.json"
         exit 1
     fi
+
+    FXN="$2"
+    JSON_FILE="$3"
 
     if [ ! -d "./src/lambdas/$FXN" ]; then
         echo "$FXN is not the directory of a lambda function in src/lambdas."
@@ -94,12 +102,12 @@ elif [ "$COMMAND" = "upload" ]; then
     # Upload new lambda function code.
     # eg: ./dev.sh upload myfunction
 
-    FXN="$2"
-
     if [ "$#" -ne 2 ]; then
         echo "Supply a function name to build and upload.  eg: $0 upload myfunction"
         exit 1
     fi
+
+    FXN="$2"
 
     if [ ! -d "./src/lambdas/$FXN" ]; then
         echo "$FXN is not the directory of a lambda function in src/lambdas."
@@ -120,8 +128,7 @@ elif [ "$COMMAND" = "upload" ]; then
 
 else
     echo "Error: unknown command name '$COMMAND'."
-    echo "  usage: $0 <command name>"
-    echo "Valid command names: build deploy invoke upload"
+    echo -e $USAGE
     exit 2
 
 fi
