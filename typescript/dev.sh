@@ -53,7 +53,7 @@ elif [ "$COMMAND" = "delete" ]; then
 elif [ "$COMMAND" = "deploy" ]; then
     # Deploy all code and update the CloudFormation stack.
     # eg: ./dev.sh deploy
-    # eg: aws-profile infrastructure_admin ./deploy.sh
+    # eg: aws-profile infrastructure_admin ./deploy.sh deploy
 
     npm run build
 
@@ -96,7 +96,7 @@ elif [ "$COMMAND" = "invoke" ]; then
         exit 1
     fi
 
-    aws lambda invoke --function-name $FXN_ID --payload fileb://$JSON_FILE /dev/stdout
+    aws --cli-read-timeout 300 lambda invoke --function-name $FXN_ID --payload fileb://$JSON_FILE /dev/stdout
 
 elif [ "$COMMAND" = "upload" ]; then
     # Upload new lambda function code.
