@@ -3,7 +3,7 @@ phases:
   install:
     commands:
       - echo Build enviromment `uname -a` `aws --version 2>&1` node/`node --version` npm/`npm --version`
-      - npm install
+      - npm install || (cat /root/.npm/_logs/*-debug.log && false)
   pre_build:
     commands:
   build:
