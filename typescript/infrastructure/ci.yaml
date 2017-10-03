@@ -232,6 +232,8 @@ Resources:
               - lambda:GetFunctionConfiguration
               - lambda:InvokeFunction
               - lambda:RemovePermission
+              - lambda:TagResource
+              - lambda:UntagResource
               - lambda:UpdateFunctionCode
               - lambda:UpdateFunctionConfiguration
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${ProjectName}-*"
@@ -242,6 +244,22 @@ Resources:
               - lambda:DeleteEventSourceMapping
               - lambda:GetEventSourceMapping
             Resource: "*"
+          # API Gateway (REST events)
+#          - Effect: Allow
+#            Action:
+#              - apigateway:*
+#            Resource: !Sub "arn:aws:apigateway:${AWS::Region}::/*"
+          # CloudWatch event triggers
+#          - Effect: Allow
+#            Action:
+#              - events:DeleteRule
+#              - events:DescribeRule
+#              - events:DisableRule
+#              - events:EnableRule
+#              - events:PutRule
+#              - events:PutTargets
+#              - events:RemoveTargets
+#            Resource: !Sub "arn:aws:events:${AWS::Region}:${AWS::AccountId}:rule/${ProjectName}-*"
           # Kinesis stream event mapping
 #          - Effect: Allow
 #            Action:
@@ -260,19 +278,39 @@ Resources:
 #              - dynamodb:GetShardIterator
 #              - dynamodb:GetRecords
 #            Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/*"
-          # Manage DynamoDB tables
+          # DynamoDB tables
 #          - Effect: Allow
 #            Action:
 #              - dynamodb:CreateTable
 #              - dynamodb:DeleteTable
 #              - dynamodb:DescribeTable
+#              - dynamodb:ListTagsOfResource
+#              - dynamodb:TagResource
+#              - dynamodb:UntagResource
 #              - dynamodb:UpdateTable
 #            Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ProjectName}-*"
-          - Effect: Allow
-            Action:
-              - apigateway:*
-            Resource: !Sub "arn:aws:apigateway:${AWS::Region}::/*"
-          # Manage ElasticsearchService resources
+          # S3
+#          - Effect: Allow
+#            Action:
+#              - s3:CreateBucket
+#              - s3:GetBucketAcl
+#              - s3:GetBucketNotification
+#              - s3:GetBucketTagging
+#              - s3:PutBucketAcl
+#              - s3:PutBucketNotification
+#              - s3:PutBucketTagging
+#            Resource: "*"
+          # SQS
+#          - Effect: Allow
+#            Action:
+#              - sqs:AddPermission
+#              - sqs:CreateQueue
+#              - sqs:DeleteQueue
+#              - sqs:GetQueueAttributes
+#              - sqs:RemovePermission
+#              - sqs:SetQueueAttributes
+#            Resource: !Sub "arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:${ProjectName}-*"
+          # ElasticsearchService
 #          - Effect: Allow
 #            Action:
 #              - es:*

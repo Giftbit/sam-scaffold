@@ -27,7 +27,7 @@ The behaviour of a lambda function is determined by its source code (inside a su
 
 Compile the project with: `npm run build`.
 
-Each lambda function will be built separately and packaged with its dependencies in a zip file in `dist`.  For example `src/lambdas/myfxn` will be packaged in `dist/myfxn/myfxn.zip`.  Don't worry about unnecessary libraries in node_modules being included.  Only the source code referenced will be included.
+Each lambda function will be built separately and packaged with its dependencies in a zip file in `dist`.  For example `src/lambdas/myfxn` will be packaged in `dist/myfxn/myfxn.zip`.  Don't worry about unnecessary libraries in node_modules being included.  WebPack ensures only the source code referenced will be included.
 
 ### Deployment
 
@@ -78,7 +78,7 @@ Continuous integration is set up through another CloudFormation stack `infrastru
 
 Again, for clarity: `sam.yaml` defines the SAM stack that is the definition of all your lambda functions and their resources; `buildspec.yml` defines your compile and deploy commands; `ci.yaml` defines the CI stack that watches for git repo changes and redeploys the SAM stack automatically.
 
-The CI stack itself **is not** deployed automatically on changes.  It must be deployed manually.  This was chosen to increase the effort necessary to attack the account.  The CI stack should rarely need to change.
+The CI stack itself **is not** deployed automatically on changes.  It must be deployed manually.  This was chosen to increase the effort necessary to attack the account.  The CI stack should rarely need to change.  For help manually deploying a CloudFormation stack see the relevant [AWS documentation](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-console.html). 
 
 ### Build secrets
 
