@@ -6,7 +6,7 @@
     "build": "webpack",
     "clean": "rimraf ./dist",
     "lint": "eslint \"src/**/*.js\"",
-    "testjs": "mocha --recursive --throw-deprecation --compilers js:babel-core/register --require babel-polyfill \"src/**/*.test.js\""
+    "test": "mocha --recursive --throw-deprecation --compilers js:babel-core/register --require babel-polyfill \"src/**/*.test.js\""
   },
   "repository": {
     "type": "git",
