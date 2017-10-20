@@ -237,12 +237,15 @@ Resources:
               - lambda:UpdateFunctionCode
               - lambda:UpdateFunctionConfiguration
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${ProjectName}-*"
-          # This block is necessary for any event mapping
+          # This block is necessary for any event mapping and tagging
           - Effect: Allow
             Action:
               - lambda:CreateEventSourceMapping
               - lambda:DeleteEventSourceMapping
               - lambda:GetEventSourceMapping
+              - lambda:ListTags
+              - lambda:TagResource
+              - lambda:UntagResource
             Resource: "*"
           # API Gateway (REST events)
 #          - Effect: Allow
