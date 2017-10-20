@@ -237,12 +237,16 @@ Resources:
               - lambda:UpdateFunctionCode
               - lambda:UpdateFunctionConfiguration
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${ProjectName}-*"
-          # This block is necessary for any event mapping and tagging
+          # This block is necessary for any event mapping
           - Effect: Allow
             Action:
               - lambda:CreateEventSourceMapping
               - lambda:DeleteEventSourceMapping
               - lambda:GetEventSourceMapping
+            Resource: "*"
+          # Lambda tagging
+          - Effect: Allow
+            Action:
               - lambda:ListTags
               - lambda:TagResource
               - lambda:UntagResource
@@ -292,6 +296,13 @@ Resources:
 #              - dynamodb:UntagResource
 #              - dynamodb:UpdateTable
 #            Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ProjectName}-*"
+          # DynamoDB table tagging
+#          - Effect: Allow
+#            Action:
+#              - dynamodb:ListTags
+#              - dynamodb:TagResource
+#              - dynamodb:UntagResource
+#            Resource: "*"
           # S3
 #          - Effect: Allow
 #            Action:
