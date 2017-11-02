@@ -291,10 +291,12 @@ Resources:
 #              - dynamodb:CreateTable
 #              - dynamodb:DeleteTable
 #              - dynamodb:DescribeTable
+#              - dynamodb:DescribeTimeToLive
 #              - dynamodb:ListTagsOfResource
 #              - dynamodb:TagResource
 #              - dynamodb:UntagResource
 #              - dynamodb:UpdateTable
+#              - dynamodb:UpdateTimeToLive
 #            Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ProjectName}-*"
           # DynamoDB table tagging
 #          - Effect: Allow
