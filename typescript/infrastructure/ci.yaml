@@ -305,6 +305,11 @@ Resources:
 #              - dynamodb:TagResource
 #              - dynamodb:UntagResource
 #            Resource: "*"
+          # DynamoDB autoscaling
+#          - Effect: Allow
+#            Action:
+#              - application-autoscaling:*
+#            Resource: *
           # S3
 #          - Effect: Allow
 #            Action:
