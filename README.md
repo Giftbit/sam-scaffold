@@ -5,6 +5,8 @@ A template for an AWS SAM project with continuous integration.
 
 This project features:  TypeScript or ES2015 compilation, linting, unit testing, CloudFormation templates, continuous integration.
 
+Included are two example lambda functions: `helloWorld` which does all the incredible things you expect from that name, and `robots` which implements a simple CRUD REST API using [Cassava](https://github.com/Giftbit/cassava/).
+
 ## Source code
 
 Two versions are provided: one with a [TypeScript](https://www.typescriptlang.org/) code base and another with JavaScript ([ES2015](https://en.wikipedia.org/wiki/ECMAScript#6th_Edition_-_ECMAScript_2015) specifically).  I highly recommend the TypeScript version, but the choice is yours.

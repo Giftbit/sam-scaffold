@@ -12,6 +12,14 @@ Resources:
       Runtime: nodejs8.10
       MemorySize: 128
       Timeout: 30 # seconds, 300 max
+  RobotsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../dist/robots/robots.zip
+      Handler: index.handler
+      Runtime: nodejs8.10
+      MemorySize: 128
+      Timeout: 30 # seconds, 300 max
       Events:
         RestApi:
           Type: Api
