@@ -4,7 +4,7 @@ import * as index from "./";
 describe("helloWorld", () => {
     describe("handlerAsync()", () => {
         it("returns 'Hello World'", async() => {
-            const msg = await index.handlerAsync({});
+            const msg = await index.handler({});
             chai.assert.equal(msg, "Hello world");
         });
     });
