@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import * as cassava from "cassava";
 
 interface Robot {

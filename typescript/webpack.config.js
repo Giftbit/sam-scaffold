@@ -9,6 +9,7 @@ module.exports = function (env) {
 
     return functionsToBuild
         .map(fxn => ({
+            mode: 'production',
             context: path.resolve(__dirname),
             entry: path.join(lambdaFunctionDir, fxn, 'index.ts'),
             output: {
@@ -57,6 +58,10 @@ module.exports = function (env) {
             },
             resolve: {
                 extensions: ['.ts', '.tsx', '.js']
+            },
+            optimization: {
+                minimize: false,
+                namedModules: true
             },
             plugins: [
                 new ZipPlugin({
