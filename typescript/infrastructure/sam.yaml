@@ -26,3 +26,7 @@ Resources:
           Properties:
             Path: /{proxy+}
             Method: ANY
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ImmaDumbBucket
