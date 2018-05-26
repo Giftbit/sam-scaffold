@@ -1,0 +1,25 @@
+{
+  "name": "sam-scaffold",
+  "version": "1.0.0",
+  "description": "Golang lambda",
+  "scripts": {
+    "build": "bash build.sh",
+    "test": "go test ./...",
+    "lint": "go vet ./..."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Giftbit/sam-scaffold.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Giftbit/sam-scaffold/issues"
+  },
+  "homepage": "https://github.com/Giftbit/sam-scaffold#readme",
+  "devDependencies": {
+  },
+  "dependencies": {
+  }
+}

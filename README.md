@@ -49,13 +49,15 @@ These are the commands you can use...
 
 Linting is running a program that checks the source code for potential style and logical problems.  The linter is set up to be run with: `npm run lint`.
 
-Linting is provided by [ESLint](http://eslint.org/) in JavaScript and [TSLint](https://palantir.github.io/tslint/) in TypeScript.  Check out their documentation for adjusting the rules to suit your preferred style.
+Linting is provided by [ESLint](http://eslint.org/) in JavaScript, [TSLint](https://palantir.github.io/tslint/) in TypeScript, and [GoVet](https://golang.org/cmd/vet/) in Go.  Check out their documentation for adjusting the rules to suit your preferred style.
 
 ### Unit testing
 
-Unit testing is provided by [Mocha](https://mochajs.org/) and [Chai](http://chaijs.com/) and is run with: `npm run test`.
+Unit testing is provided by [Mocha](https://mochajs.org/) and [Chai](http://chaijs.com/) for Javascript/Typescript, and [Go Test](https://golang.org/pkg/testing/) for Golang. They are run with: `npm run test`.
  
-Test files are located next to the file beign tested with `.test` added before the extension.  eg: `index.ts` is beside test file `index.test.ts`.  Just like libraries not referenced by index.ts WebPack will not include these file in the distribution.
+Javascript and Typescript test files are located next to the file being tested with `.test` added before the extension.  eg: `index.ts` is beside test file `index.test.ts`.  Just like libraries not referenced by index.ts WebPack will not include these file in the distribution.
+
+Golang test files are similarly located, but are written as `name_test.go` with name being the name of the source being tested.
 
 ### Adding a new lambda function
 

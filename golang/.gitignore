@@ -1,0 +1,7 @@
+# IntelliJ stuff
+*.iml
+.idea/
+
+# Build output
+bin/
+dist/
