@@ -149,10 +149,6 @@ The sequence of events goes like this:
 - a developer approves the changeset
 - CloudFormation executes the change set for the SAM stack on *prod*
 
-## Contributing
-
-Please see [CONTRIBUTING.md](CONTRIBUTING.md).
-
 ### Contributors
 - [Giftbit](https://github.com/Giftbit)
 - [Jeffery Grajkowski](https://github.com/pushplay/)
