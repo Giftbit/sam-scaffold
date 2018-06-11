@@ -3,15 +3,9 @@ A template for an AWS SAM project with continuous integration.
 
 [SAM](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md) is an extension of AWS's CloudFormation that makes it easier to define serverless applications.  It is unopinionated on language choice, build tools, or project layout.  This example project provides a set of opinions on those choices.  It can be cloned and used as is to get a serverless project up and running quickly, or it can be used as a guideline for your own project.
 
-This project features:  TypeScript or ES2015 compilation, linting, unit testing, CloudFormation templates, continuous integration.
+This project features templates for [Go](https://golang.org/), JavaScript [ES2015](https://en.wikipedia.org/wiki/ECMAScript#6th_Edition_-_ECMAScript_2015) and [TypeScript](https://www.typescriptlang.org/).  READMEs in each project directory provide language-specific information.
 
-Included are two example lambda functions: `helloWorld` which does all the incredible things you expect from that name, and `robots` which implements a simple CRUD REST API using [Cassava](https://github.com/Giftbit/cassava/).
-
-## Source code
-
-Two versions are provided: one with a [TypeScript](https://www.typescriptlang.org/) code base and another with JavaScript ([ES2015](https://en.wikipedia.org/wiki/ECMAScript#6th_Edition_-_ECMAScript_2015) specifically).  I highly recommend the TypeScript version, but the choice is yours.
-
-## Development
+## Project Structure
 
 ```
 .
@@ -25,15 +19,9 @@ Two versions are provided: one with a [TypeScript](https://www.typescriptlang.or
 
 The behaviour of a lambda function is determined by its source code (inside a subdirectory of `src/lambdas`) and the other serverless resources it has access to (inside the CloudFormation template `infrastructure/sam.yaml`).
 
-### Building
+### dev.sh
 
-Compile the project with: `npm run build`.
-
-Each lambda function will be built separately and packaged with its dependencies in a zip file in `dist`.  For example `src/lambdas/myfxn` will be packaged in `dist/myfxn/myfxn.zip`.  Don't worry about unnecessary libraries in node_modules being included.  WebPack ensures only the source code referenced will be included.
-
-### Deployment
-
-Deploying to a development account is easily done with the included script `dev.sh`.  The script requires the [aws cli](https://aws.amazon.com/cli/) installed and configured for a development account.  For security reasons this should not be your production account.  It also requires bash, which is a useful tool even on [Windows](http://stackoverflow.com/questions/36352627/how-to-enable-bash-in-windows-10-developer-preview).
+Building the project and managing the development account is easily done with the included script `dev.sh`.  The script requires the [aws cli](https://aws.amazon.com/cli/) installed and configured for a development account.  For security reasons this should not be your production account.  It also requires bash, which is a useful tool even on [Windows](http://stackoverflow.com/questions/36352627/how-to-enable-bash-in-windows-10-developer-preview).
  
 Edit the top of `dev.sh` and replace `STACK_NAME` with a name that describes the project and replace `BUILD_ARTIFACT_BUCKET` with the name of an S3 bucket you have access to for build artifact storage.
 
@@ -44,18 +32,6 @@ These are the commands you can use...
 - `./dev.sh upload foo` -- only replace the the code for the lambda function `foo`.
 - `./dev.sh invoke foo bar.json` -- invoke and test the already deployed function `foo` with the input file `bar.json`.
 - `./dev.sh delete` -- delete the entire CloudFormation stack and all resources.
-
-### Linting
-
-Linting is running a program that checks the source code for potential style and logical problems.  The linter is set up to be run with: `npm run lint`.
-
-Linting is provided by [ESLint](http://eslint.org/) in JavaScript and [TSLint](https://palantir.github.io/tslint/) in TypeScript.  Check out their documentation for adjusting the rules to suit your preferred style.
-
-### Unit testing
-
-Unit testing is provided by [Mocha](https://mochajs.org/) and [Chai](http://chaijs.com/) and is run with: `npm run test`.
- 
-Test files are located next to the file beign tested with `.test` added before the extension.  eg: `index.ts` is beside test file `index.test.ts`.  Just like libraries not referenced by index.ts WebPack will not include these file in the distribution.
 
 ### Adding a new lambda function
 
@@ -152,3 +128,4 @@ The sequence of events goes like this:
 ### Contributors
 - [Giftbit](https://github.com/Giftbit)
 - [Jeffery Grajkowski](https://github.com/pushplay/)
+- [Chris Pouliot](https://github.com/moxuz)
