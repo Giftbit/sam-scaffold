@@ -1,5 +1,3 @@
-import "babel-polyfill";
-
 /**
  * Example hello world Lambda function.  This is the function AWS will invoke.
  */
