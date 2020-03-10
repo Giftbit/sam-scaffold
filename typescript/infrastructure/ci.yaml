@@ -93,7 +93,7 @@ Resources:
         # ComputeType options: BUILD_GENERAL1_SMALL, BUILD_GENERAL1_MEDIUM, BUILD_GENERAL1_LARGE
         ComputeType: BUILD_GENERAL1_SMALL
         # Run `aws codebuild list-curated-environment-images` for a complete list of images provided.
-        Image: aws/codebuild/nodejs:7.0.0
+        Image: aws/codebuild/nodejs:10
         EnvironmentVariables:
           - Name: BUILD_ARTIFACT_BUCKET
             Value: !Ref DeploymentArtifactBucket
@@ -471,9 +471,9 @@ Resources:
       Handler: index.handler
       Role: !GetAtt GitHubActionServiceRole.Arn
       Code:
-        S3Bucket: giftbit-public-resources
-        S3Key: cloudformation/codepipeline-github-action/2017-03-27.zip
-      Runtime: nodejs6.10
+        S3Bucket: lightrail-public-resources
+        S3Key: cloudformation/codepipeline-github-action/2019-10-23.zip
+      Runtime: nodejs10.x
       Timeout: 120
       Environment:
         Variables:
