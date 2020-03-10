@@ -46,9 +46,6 @@ Add a new `AWS::Serverless::Function` resource inside `infrastructure/sam.yaml`.
 ├── buildspec.yml
 └── infrastructure
     ├── ci.yaml
-    ├── ciDockerImage
-    │   ├── Dockerfile
-    │   └── build.sh
     └── sam.yaml
 ```
 
@@ -60,7 +57,7 @@ The CI stack itself **is not** deployed automatically on changes.  It must be de
 
 ### Build secrets
 
-You may run into a scenario where you need access to secrets during the build process.  For example you have a private repository of packages and need an ssh key to access them.
+You may run into a scenario where you need access to secrets during the build process.  For example you have a private repository of packages and need an SSH key to access them.
 
 The best way to handle these secrets is store them in an S3 bucket, give the `CodeBuildServicePolicy` permission to read that bucket, and then use aws cli commands to retrieve the secrets.
 
