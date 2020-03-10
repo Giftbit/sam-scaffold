@@ -6,7 +6,7 @@ Included are two example lambda functions: `helloWorld` which does all the incre
 
 Linting is running a program that checks the source code for potential style and logical problems.  The linter is set up to be run with: `npm run lint`.
 
-Linting is provided by [TSLint](https://palantir.github.io/tslint/) in TypeScript.  Check out the documentation for adjusting the rules to suit your preferred style.
+Linting is provided by [ESLint](http://eslint.org/) with a [TypeScript plugin](https://typescript-eslint.io/).  Check out the documentation for adjusting the rules to suit your preferred style.
 
 ## Unit testing
 
