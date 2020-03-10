@@ -1,4 +1,4 @@
-{
+module.exports = {
   "env": {
     "node": true,
     "mocha": true
@@ -27,4 +27,4 @@
     ],
     "no-console": 0
   }
-}
+};

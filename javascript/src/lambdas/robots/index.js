@@ -21,10 +21,10 @@ export const router = new cassava.Router();
 
 router.route("/robots")
     .method("GET")
-    .handler(evt => {
+    .handler(() => {
         return {
             body: Object.keys(robots).map(key => robots[key])
-        }
+        };
     });
 
 router.route("/robots/{robot}")
@@ -61,7 +61,7 @@ router.route("/robots/{robot}")
         return {
             statusCode: cassava.httpStatusCode.success.NO_CONTENT,
             body: null
-        }
+        };
     });
 
 router.route("/robots/{robot}")
@@ -76,7 +76,7 @@ router.route("/robots/{robot}")
         return {
             statusCode: cassava.httpStatusCode.success.NO_CONTENT,
             body: null
-        }
+        };
     });
 
 /**

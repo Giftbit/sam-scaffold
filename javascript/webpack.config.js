@@ -25,10 +25,11 @@ module.exports = function (env) {
                             {
                                 loader: 'babel-loader',
                                 options: {
-                                    presets: [['@babel/env', {targets: {node: '8.10'}}]],
+                                    presets: [['@babel/env', {targets: {node: '10.16'}}]],
                                     plugins: [],
                                     compact: false,
-                                    babelrc: false
+                                    babelrc: false,
+                                    cacheDirectory: true
                                 }
                             }
                         ]
